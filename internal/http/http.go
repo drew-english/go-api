@@ -24,6 +24,7 @@ func New(conf *Config) (*HTTP, error) {
 
 	app.Use(httpl.RequestLog)
 	app.Use(gin.CustomRecovery(middleware.RecoverFromPanic(&httpl)))
+	ConfigRoutes(app)
 
 	return &HTTP{app, conf}, nil
 }
