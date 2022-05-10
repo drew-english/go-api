@@ -2,6 +2,7 @@ package http
 
 import (
 	"go-api/internal/pkg/logger"
+	"go-api/internal/http/middleware"
 	"github.com/gin-gonic/gin"
 
 	"fmt"
@@ -17,12 +18,14 @@ type Config struct {
 	Port string
 }
 
-func New(c *Config) (*HTTP, error) {
+func New(conf *Config) (*HTTP, error) {
 	app := gin.New()
+	httpl := middleware.HTTPLogger{Logger: conf.Logger}
 
-	app.Use((&HTTPLogger{c.Logger}).New())
+	app.Use(httpl.RequestLog)
+	app.Use(gin.CustomRecovery(middleware.RecoverFromPanic(&httpl)))
 
-	return &HTTP{app, c}, nil
+	return &HTTP{app, conf}, nil
 }
 
 func (h *HTTP) Run() {

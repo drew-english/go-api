@@ -8,12 +8,12 @@ import (
 func main() {
 	appLogger := logger.New("go-api", "v1.0.0", 1)
 
-	app, ok := http.New(&http.Config{
+	app, err := http.New(&http.Config{
 		Logger: appLogger,
 		Port: "3000",
 	})
 
-	if ok != nil {
+	if err == nil {
 		app.Run()
 	}
 }

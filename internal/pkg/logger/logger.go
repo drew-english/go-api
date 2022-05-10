@@ -27,6 +27,7 @@ type Logger interface {
 	Error(payload ...interface{}) error
 	Fatal(payload ...interface{}) error
 	InfoWithExtra(extraTags map[string]interface{}, payload ...interface{}) error
+	ErrorWithExtra(extraTags map[string]interface{}, payload ...interface{}) error
 }
 
 // LogHandler implements Logger
@@ -137,6 +138,11 @@ func (lh *LogHandler) Fatal(payload ...interface{}) error {
 func (lh *LogHandler) InfoWithExtra(extraTags map[string]interface{}, payload ...interface{}) error {
 	return lh.logWithExtra(LogTypeInfo, extraTags, payload...)
 }
+
+func (lh *LogHandler) ErrorWithExtra(extraTags map[string]interface{}, payload ...interface{}) error {
+	return lh.logWithExtra(LogTypeError, extraTags, payload...)
+}
+
 
 // New returns a new instance of LogHandler
 func New(appname string, appversion string, skipStack uint) *LogHandler {
