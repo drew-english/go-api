@@ -1,11 +1,12 @@
 package http
 
 import (
-	"go-api/internal/pkg/logger"
-	"go-api/internal/http/middleware"
-	"github.com/gin-gonic/gin"
-
 	"fmt"
+
+	"go-api/internal/http/middleware"
+	"go-api/internal/models"
+	"go-api/internal/pkg/logger"
+	"github.com/gin-gonic/gin"
 )
 
 type HTTP struct {
@@ -16,6 +17,7 @@ type HTTP struct {
 type Config struct {
 	Logger *logger.LogHandler
 	Port string
+	ModelServices *model_services.Services
 }
 
 func New(conf *Config) (*HTTP, error) {
@@ -24,7 +26,7 @@ func New(conf *Config) (*HTTP, error) {
 
 	app.Use(httpl.RequestLog)
 	app.Use(gin.CustomRecovery(middleware.RecoverFromPanic(&httpl)))
-	ConfigRoutes(app)
+	ConfigRoutes(app, conf.ModelServices)
 
 	return &HTTP{app, conf}, nil
 }

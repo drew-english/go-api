@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"go-api/internal/pkg/logger"
-	"github.com/gin-gonic/gin"
-	
-	"time"
 	"fmt"
+	"time"
+
+	"go-api/internal/pkg/logger"
+	"github.com/gin-gonic/gin"	
 )
 
 type HTTPLogger struct {

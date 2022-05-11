@@ -1,6 +1,9 @@
 package http
 
 import (
+	"go-api/internal/handlers"
+	"go-api/internal/models"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,17 +21,21 @@ type route struct {
 	handler gin.HandlerFunc
 }
 
-var v1Routes = []route {
-	{ post, "/app_setting", func(c *gin.Context) {} },
-	{ get, "/app_setting/:name", func(c *gin.Context) {} },
-	{ patch, "/app_setting/:name", func(c *gin.Context) {} },
-	{ delete, "/app_setting/:name", func(c *gin.Context) {} },
+func v1Routes(modelService *model_services.Services) *[]route {
+	appSettingHandler := handlers.AppSettingHandler{AppSettings: modelService.AppSettings}
+
+	return &[]route {
+		{ post, "/app_setting", appSettingHandler.Create },
+		{ get, "/app_setting/:name", appSettingHandler.Show },
+		{ patch, "/app_setting/:name", appSettingHandler.Update },
+		{ delete, "/app_setting/:name", appSettingHandler.Delete },
+	}
 }
 
-func ConfigRoutes(engine *gin.Engine) {
+func ConfigRoutes(engine *gin.Engine, modelService *model_services.Services) {
 	apiV1 := engine.Group("/api/v1")
-	
-	for _, r := range v1Routes {
+
+	for _, r := range *v1Routes(modelService) {
 		apiV1.Handle(string(r.method), r.path, r.handler)
 	}
 }
