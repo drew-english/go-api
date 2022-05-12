@@ -5,6 +5,6 @@ nodes:
   extraPortMappings:
   - containerPort: 30007
     hostPort: 3000
-  # extraMounts:
-  # - hostPath: /Users/drew/testground/rails-kube
-  #   containerPath: /app
+  extraMounts:
+  - hostPath: /Users/drew/testground/go-api
+    containerPath: /app

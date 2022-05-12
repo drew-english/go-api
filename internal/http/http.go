@@ -21,6 +21,7 @@ type Config struct {
 }
 
 func New(conf *Config) (*HTTP, error) {
+	gin.SetMode(gin.ReleaseMode)
 	app := gin.New()
 	httpl := middleware.HTTPLogger{Logger: conf.Logger}
 
