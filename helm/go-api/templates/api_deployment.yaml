@@ -1,0 +1,9 @@
+{{ include "go-api.deployment" .Values.api }}
+      #     volumeMounts:
+      #       - mountPath: /app
+      #         name: app-volume
+      # volumes:
+      #   - name: app-volume
+      #     hostPath:
+      #       path: /app
+      #       type: Directory

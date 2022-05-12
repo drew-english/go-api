@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+{{- with .Values.mongo }}
+metadata:  
+  name: {{ print .name | quote }}
+spec:
+  selector:    
+    app: {{ .name | quote }}
+  ports:  
+    - port: {{ .config.port }}
+{{- end }}

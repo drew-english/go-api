@@ -1,0 +1,16 @@
+api:
+  name: go-api
+  image:
+    name: go-api
+    tag: local
+  config:
+    port: 3000
+    nodePort: 30007
+
+mongo:
+  name: db
+  image:
+    name: mongo
+    tag: '5.0'
+  config:
+    port: 27017
