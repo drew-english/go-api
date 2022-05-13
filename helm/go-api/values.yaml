@@ -8,7 +8,7 @@ api:
     nodePort: 30007
 
 mongo:
-  name: db
+  name: mongodb
   image:
     name: mongo
     tag: '5.0'

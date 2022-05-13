@@ -14,7 +14,7 @@ func main() {
 	// init DB connection
 	mongoDB := db.New(&db.Config{
 		DBName: "main",
-		Host:   "mongo",
+		Host:   "mongodb",
 		Port:   "27017",
 	})
 
