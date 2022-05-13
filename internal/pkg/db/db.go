@@ -1,7 +1,7 @@
 package db
 
 import (
-	"context"
+	ctx "context"
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,9 +20,13 @@ func (conf *Config) uri() string {
 }
 
 func New(conf *Config) *mongo.Database {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(conf.uri()))
+	client, err := mongo.Connect(ctx.TODO(), options.Client().ApplyURI(conf.uri()))
 	if err != nil {
 		panic(err)
+	}
+
+	if client.Ping(ctx.TODO(), nil) != nil {
+		panic("Error connecting to DB")
 	}
 
 	return client.Database(conf.DBName)

@@ -1,7 +1,7 @@
 package app_setting
 
 import (
-	"context"
+	ctx "context"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -27,7 +27,7 @@ func NewService(db *mongo.Database) *AppSettings {
 }
 
 func (as *AppSettings) Create(newSetting *AppSetting) (err error) {
-	_, err = as.Collection.InsertOne(context.TODO(), newSetting)
+	_, err = as.Collection.InsertOne(ctx.TODO(), newSetting)
 	return
 }
 
@@ -35,7 +35,7 @@ func (as *AppSettings) Find(name string) (*AppSetting, error) {
 	var foundSetting AppSetting
 
 	filter := bson.D{{ Key: "name", Value: name }}
-	err := as.Collection.FindOne(context.TODO(), filter).Decode(&foundSetting)
+	err := as.Collection.FindOne(ctx.TODO(), filter).Decode(&foundSetting)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			err = NOT_FOUND_ERROR{}
