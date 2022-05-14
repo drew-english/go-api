@@ -1,4 +1,7 @@
+---
 {{ include "go-api.deployment" .Values.api }}
+            - name: "APP_VERSION"
+              value: {{ .Chart.AppVersion | quote }}
           volumeMounts:
             - mountPath: /app
               name: app-volume
@@ -7,3 +10,5 @@
           hostPath:
             path: /app
             type: Directory
+---
+{{ include "go-api.deployment" .Values.mongo }}

@@ -1,4 +1,4 @@
-package model_services
+package models
 
 import (
 	"go-api/internal/models/app_setting"
@@ -13,7 +13,7 @@ type Config struct {
 	DB *mongo.Database
 }
 
-func New(conf *Config) *Services {
+func NewService(conf *Config) *Services {
 	appSettingService := app_setting.AppSettings{Collection: conf.DB.Collection(app_setting.APP_SETTING_COLLECTION)}
 	
 	return &Services{AppSettings: &appSettingService}

@@ -10,7 +10,6 @@ import (
 
 type Config struct {
 	DBName string
-
 	Host string
 	Port string
 }

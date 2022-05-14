@@ -7,5 +7,5 @@ spec:
   selector:    
     app: {{ .name | quote }}
   ports:  
-    - port: {{ .config.port }}
+    - port: {{ .config.containerPort }}
 {{- end }}

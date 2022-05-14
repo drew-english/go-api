@@ -21,7 +21,7 @@ type route struct {
 	handler gin.HandlerFunc
 }
 
-func v1Routes(modelService *model_services.Services) *[]route {
+func v1Routes(modelService *models.Services) *[]route {
 	appSettingHandler := handlers.AppSettingHandler{AppSettings: modelService.AppSettings}
 
 	return &[]route {
@@ -32,7 +32,7 @@ func v1Routes(modelService *model_services.Services) *[]route {
 	}
 }
 
-func ConfigRoutes(engine *gin.Engine, modelService *model_services.Services) {
+func ConfigRoutes(engine *gin.Engine, modelService *models.Services) {
 	apiV1 := engine.Group("/api/v1")
 
 	for _, r := range *v1Routes(modelService) {

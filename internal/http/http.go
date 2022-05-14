@@ -17,7 +17,7 @@ type HTTP struct {
 type Config struct {
 	Logger *logger.LogHandler
 	Port string
-	ModelServices *model_services.Services
+	ModelServices *models.Services
 }
 
 func New(conf *Config) (*HTTP, error) {

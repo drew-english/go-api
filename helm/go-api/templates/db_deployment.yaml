@@ -1,1 +1,0 @@
-{{ include "go-api.deployment" .Values.mongo }}

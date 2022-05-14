@@ -4,29 +4,34 @@ import (
 	"go-api/internal/http"
 	"go-api/internal/models"
 	"go-api/internal/pkg/db"
+	"go-api/internal/pkg/env"
 	"go-api/internal/pkg/logger"
 )
 
 func main() {
 	// init logger
-	appLogger := logger.New("go-api", "v1.0.0", 1)
+	appLogger := logger.New(
+		env.GetEnvDefault("APP_NAME", "go-api"),
+		env.GetEnvDefault("APP_VERSION", "Unknown Version"),
+		1,
+	)
 
 	// init DB connection
 	mongoDB := db.New(&db.Config{
-		DBName: "main",
-		Host:   "mongodb",
-		Port:   "27017",
+		DBName: env.GetEnvDefault("DB_DATABASE", "main"),
+		Host: env.GetEnvDefault("DB_HOST", "mongo"),
+		Port: env.GetEnvDefault("DB_PORT", "27017"),
 	})
 
 	// init model services
-	modelServices := model_services.New(&model_services.Config{
+	modelServices := models.NewService(&models.Config{
 		DB: mongoDB,
 	})
 
 	// init server
 	app, err := http.New(&http.Config{
 		Logger: appLogger,
-		Port:   "3000",
+		Port:   env.GetEnvDefault("APP_PORT", "3000"),
 		ModelServices: modelServices,
 	})
 

@@ -16,5 +16,12 @@ spec:
         - name: {{ .name | quote }}
           image: {{ print .image.name ":" .image.tag | quote }}
           ports:
-            - containerPort: {{ .config.port }}
+            - containerPort: {{ .config.containerPort }}
+          {{- if .config.env }}
+          env:
+            {{- range $key, $val := .config.env }}
+            - name: {{ $key | quote }}
+              value: {{ $val | quote }}
+            {{- end }}
+          {{- end }}
 {{- end }}

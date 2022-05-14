@@ -1,16 +1,28 @@
+common:
+  goApiPort: &goApiPort 3000
+  goApiName: &goApiName go-api
+  dbPort: &dbPort 27017
+  dbName: &dbName mongodb
+
 api:
-  name: go-api
+  name: *goApiName
   image:
-    name: go-api
+    name: *goApiName
     tag: local
   config:
-    port: 3000
+    containerPort: *goApiPort
     nodePort: 30007
+    env:
+      APP_PORT: *goApiPort
+      APP_NAME: *goApiName
+      DB_PORT: *dbPort
+      DB_HOST: *dbName
+      DB_DATABASE: main
 
 mongo:
-  name: mongodb
+  name: *dbName
   image:
     name: mongo
     tag: '5.0'
   config:
-    port: 27017
+    containerPort: *dbPort
