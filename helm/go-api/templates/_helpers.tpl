@@ -17,6 +17,10 @@ spec:
           image: {{ print .image.name ":" .image.tag | quote }}
           ports:
             - containerPort: {{ .config.containerPort }}
+          {{- if .config.command }}
+          command: ["/bin/bash"]
+          args: ["-c", {{ .config.command | quote }}]
+          {{- end }}
           {{- if .config.env }}
           env:
             {{- range $key, $val := .config.env }}

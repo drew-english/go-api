@@ -12,6 +12,7 @@ api:
   config:
     containerPort: *goApiPort
     nodePort: 30007
+    command: go install github.com/cosmtrek/air@latest && air
     env:
       APP_PORT: *goApiPort
       APP_NAME: *goApiName
