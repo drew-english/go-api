@@ -1,0 +1,110 @@
+definitions:
+  app_setting.AppSetting:
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+    type: object
+  docutil.NotFoundResponse:
+    properties:
+      message:
+        example: Not Found
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/app_setting:
+    post:
+      consumes:
+      - application/json
+      description: Creates an App Setting with given name and value
+      parameters:
+      - description: App Setting data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/app_setting.AppSetting'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+      tags:
+      - App Settings
+    put:
+      consumes:
+      - application/json
+      description: Updates the App Setting matching a given namm
+      parameters:
+      - description: App Setting with new value
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/app_setting.AppSetting'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucessfully updated
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/docutil.NotFoundResponse'
+        "500":
+          description: Internal Server Error
+      tags:
+      - App Settings
+  /v1/app_setting/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes the App Setting matching a given namm
+      parameters:
+      - description: App Setting to delete
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucessfully deleted
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/docutil.NotFoundResponse'
+        "500":
+          description: Internal Server Error
+      tags:
+      - App Settings
+    get:
+      description: Returns the value for given name
+      parameters:
+      - description: Name of the App Setting
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app_setting.AppSetting'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/docutil.NotFoundResponse'
+        "500":
+          description: Internal Server Error
+      tags:
+      - App Settings
+swagger: "2.0"

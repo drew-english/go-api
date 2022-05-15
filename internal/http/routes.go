@@ -1,17 +1,20 @@
 package http
 
 import (
+	"go-api/docs"
 	"go-api/internal/handlers"
 	"go-api/internal/models"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type requestMethod string
 const (
 	get requestMethod = "GET"
+	put requestMethod = "PUT"
 	post requestMethod = "POST"
-	patch requestMethod = "PATCH"
 	delete requestMethod = "DELETE"
 )
 
@@ -26,13 +29,15 @@ func v1Routes(modelService *models.Services) *[]route {
 
 	return &[]route {
 		{ post, "/app_setting", appSettingHandler.Create },
+		{ put, "/app_setting", appSettingHandler.Update },
 		{ get, "/app_setting/:name", appSettingHandler.Show },
-		{ patch, "/app_setting/:name", appSettingHandler.Update },
 		{ delete, "/app_setting/:name", appSettingHandler.Delete },
 	}
 }
 
 func ConfigRoutes(engine *gin.Engine, modelService *models.Services) {
+	docs.SwaggerInfo.BasePath = "/api"
+	engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiV1 := engine.Group("/api/v1")
 
 	for _, r := range *v1Routes(modelService) {
