@@ -5,17 +5,9 @@ import (
 	"go-api/internal/models"
 	"go-api/internal/pkg/db"
 	"go-api/internal/pkg/env"
-	"go-api/internal/pkg/logger"
 )
 
 func main() {
-	// init logger
-	appLogger := logger.New(
-		env.GetEnvDefault("APP_NAME", "go-api"),
-		env.GetEnvDefault("APP_VERSION", "Unknown Version"),
-		1,
-	)
-
 	// init DB connection
 	mongoDB := db.New(&db.Config{
 		DBName: env.GetEnvDefault("DB_DATABASE", "main"),
@@ -30,7 +22,6 @@ func main() {
 
 	// init server
 	app, err := http.New(&http.Config{
-		Logger: appLogger,
 		Port:   env.GetEnvDefault("APP_PORT", "3000"),
 		ModelServices: modelServices,
 	})

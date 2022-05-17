@@ -7,6 +7,8 @@ import (
 	"os"
 	"runtime"
 	"time"
+
+	"go-api/internal/pkg/env"
 )
 
 const (
@@ -18,6 +20,12 @@ const (
 	LogTypeError = "error"
 	// LogTypeFatal is for logging type 'fatal'
 	LogTypeFatal = "fatal"
+)
+
+var std = New(
+	env.GetEnvDefault("APP_NAME", "go-api"),
+	env.GetEnvDefault("APP_VERSION", "Unknown Version"),
+	1,
 )
 
 // Logger interface defines all the logging methods to be implemented
@@ -143,6 +151,33 @@ func (lh *LogHandler) ErrorWithExtra(extraTags map[string]interface{}, payload .
 	return lh.logWithExtra(LogTypeError, extraTags, payload...)
 }
 
+// Info is for logging items with severity 'info'
+func Info(payload ...interface{}) error {
+	return std.log(LogTypeInfo, payload...)
+}
+
+// Warn is for logging items with severity 'Warn'
+func Warn(payload ...interface{}) error {
+	return std.log(LogTypeWarn, payload...)
+}
+
+// Error is for logging items with severity 'Error'
+func Error(payload ...interface{}) error {
+	return std.log(LogTypeError, payload...)
+}
+
+// Fatal is for logging items with severity 'Fatal'
+func Fatal(payload ...interface{}) error {
+	return std.log(LogTypeFatal, payload...)
+}
+
+func InfoWithExtra(extraTags map[string]interface{}, payload ...interface{}) error {
+	return std.logWithExtra(LogTypeInfo, extraTags, payload...)
+}
+
+func ErrorWithExtra(extraTags map[string]interface{}, payload ...interface{}) error {
+	return std.logWithExtra(LogTypeError, extraTags, payload...)
+}
 
 // New returns a new instance of LogHandler
 func New(appname string, appversion string, skipStack uint) *LogHandler {

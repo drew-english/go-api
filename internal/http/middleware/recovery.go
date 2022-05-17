@@ -3,12 +3,13 @@ package middleware
 import (
 	"net/http"
 	"runtime/debug"
-	
+
+	"go-api/internal/pkg/logger"
+
 	"github.com/gin-gonic/gin"
 )
 
-
-func RecoverFromPanic(httpl *HTTPLogger) gin.RecoveryFunc {
+func RecoverFromPanic() gin.RecoveryFunc {
 	return func(c *gin.Context, recovered interface{}) {
 		extraTags := map[string]interface{} {
 			"stackTrace": string(debug.Stack()),
@@ -19,7 +20,7 @@ func RecoverFromPanic(httpl *HTTPLogger) gin.RecoveryFunc {
 			c.String(http.StatusInternalServerError, "Internal server error")
 		}
 
-		httpl.Logger.ErrorWithExtra(extraTags, "Request panic recovered")
+		logger.ErrorWithExtra(extraTags, "Request panic recovered")
 		c.AbortWithStatus(http.StatusInternalServerError)
 	}
 }

@@ -13,8 +13,12 @@ type NOT_FOUND_ERROR struct {
 	error
 }
 
+type NOT_UNIQUE_ERROR struct {
+	error
+}
+
 type AppSetting struct {
-	Name string	`json:"name" bson:"name"`
+	Name string	`json:"name" bson:"name" schema:"unique"`
 	Value string `json:"value" bson:"value"`
 }
 
@@ -28,6 +32,12 @@ func NewService(db *mongo.Database) *AppSettings {
 
 func (as *AppSettings) Create(newSetting *AppSetting) (err error) {
 	_, err = as.Collection.InsertOne(ctx.TODO(), newSetting)
+	if err != nil {
+		if ex, ok := err.(mongo.WriteException); ok && ex.HasErrorCode(11000) {
+			err = NOT_UNIQUE_ERROR{}
+		}
+	}
+
 	return
 }
 

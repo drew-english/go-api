@@ -52,11 +52,14 @@ func (ash *AppSettingHandler) Create(c *gin.Context) {
 	}
 
 	err = ash.AppSettings.Create(&newSetting)
-	if err != nil {
+	switch {
+	case errors.Is(err, app_setting.NOT_UNIQUE_ERROR{}):
+		c.JSON(400, map[string]string { "message": "Name already exists" })
+	case err != nil:
 		panic("Error creating app setting")
+	default:
+		c.Status(201)
 	}
-
-	c.Status(201)
 }
 
 // @Description Updates the App Setting matching a given namm

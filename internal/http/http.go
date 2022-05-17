@@ -5,7 +5,7 @@ import (
 
 	"go-api/internal/http/middleware"
 	"go-api/internal/models"
-	"go-api/internal/pkg/logger"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,7 +15,6 @@ type HTTP struct {
 }
 
 type Config struct {
-	Logger *logger.LogHandler
 	Port string
 	ModelServices *models.Services
 }
@@ -23,10 +22,9 @@ type Config struct {
 func New(conf *Config) (*HTTP, error) {
 	gin.SetMode(gin.ReleaseMode)
 	app := gin.New()
-	httpl := middleware.HTTPLogger{Logger: conf.Logger}
 
-	app.Use(httpl.RequestLog)
-	app.Use(gin.CustomRecovery(middleware.RecoverFromPanic(&httpl)))
+	app.Use(middleware.RequestLog)
+	app.Use(gin.CustomRecovery(middleware.RecoverFromPanic()))
 	ConfigRoutes(app, conf.ModelServices)
 
 	return &HTTP{app, conf}, nil
